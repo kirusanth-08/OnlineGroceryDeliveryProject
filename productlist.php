@@ -35,7 +35,12 @@
             echo '<h6>'.$collect['unit'].'</h6>';
             echo '<h6>Rs. '.$collect['price'].'</h6>';
             $_SESSION['productID']=$collect['productID'];
-            echo '<a href="item.php"><button id="add">Add</button></a></div>';
+            // Update the button to use the cart system
+            echo '<form method="get" action="cart.php">
+                <input type="hidden" name="add_to_cart" value="'.$collect['productID'].'">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" id="add">Add to Cart</button>
+                </form></div>';
         }
         
         mysqli_close($con);

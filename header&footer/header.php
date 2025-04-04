@@ -19,8 +19,23 @@
         else{ 
             echo '<a class="logInButton" href="login.php"><button>LogIn/SignUp <img src="icons/profile.png" id="userProfile"></button></a>';
         }
+        
+        // Get cart count
+        $cartCount = 0;
+        if(isset($_SESSION['cart'])) {
+            foreach($_SESSION['cart'] as $qty) {
+                $cartCount += $qty;
+            }
+        }
     ?>
             
-            <a class="cartButton" href="#"><img src="icons/cart.png" class="icons" id="cart" alt="cart"></a>
+            <a class="cartButton" href="cart.php">
+                <img src="icons/cart.png" class="icons" id="cart" alt="cart">
+                <?php if($cartCount > 0): ?>
+                <span style="background-color: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px; position: relative; top: -10px; left: -5px;">
+                    <?php echo $cartCount; ?>
+                </span>
+                <?php endif; ?>
+            </a>
         </div>
     </header>

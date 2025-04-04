@@ -36,7 +36,8 @@
         $acc=$res->fetch_assoc();
         $count = mysqli_num_rows($res); //Count the rows to check whether the user exits or not
         if($count==1) {
-            if($acc['AccPassword']==$password){
+            // Verify hashed password
+            if(password_verify($password, $acc['AccPassword'])){
                 echo '<script>alert("Login successful!!")</script>';
                 if($acc['AccID']==1){
                     $_SESSION['name']="Admin";

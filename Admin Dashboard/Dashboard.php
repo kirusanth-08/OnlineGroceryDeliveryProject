@@ -84,7 +84,6 @@
                                 $xyz=mysqli_query($con, $qry);
                                 $row=mysqli_num_rows($xyz);
                                 echo $row;
-                                mysqli_close($con);
                             ?>
                             </div>
                       
@@ -100,7 +99,7 @@
                                 $xyz=mysqli_query($con, $qry2);
                                 $row=mysqli_num_rows($xyz);
                                 echo $row;
-                                mysqli_close($con);
+                                // Don't close connection here as it's needed below
                             ?>
                         </div>
                     </div>
@@ -114,7 +113,6 @@
                         
                     <table>                           
                                 <?php
-                                    $con=new mysqli("localhost", "root", "", "quickart");
                                     $qry= "SELECT* FROM feedback WHERE response=0 ORDER BY feedbackID DESC";
                                     $xyz=mysqli_query($con, $qry);
                                     $rowCount=mysqli_num_rows($xyz);
@@ -131,7 +129,7 @@
                                         echo "</td></tr>";
                                         }
                                     }
-                                    mysqli_close($con);
+                                    mysqli_close($con); // Move connection close to the end
                                 ?>
                                 </table>
                     </div>

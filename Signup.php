@@ -10,7 +10,7 @@ if(isset($_SESSION['AccountID'])){
         $firstname=$_POST['firstName'];
         $lastname=$_POST['lastName'];
         $email=$_POST['email'];
-        $password=$_POST['password'];
+        $password=password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password
 
         $qry1 = "SELECT * FROM account WHERE AccEmail='$email'";   //Sql query to check whether the user with user name and password exists or not
         $result= $con->query($qry1);  //Execute the sql query

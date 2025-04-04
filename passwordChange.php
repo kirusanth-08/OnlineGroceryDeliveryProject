@@ -54,8 +54,9 @@
             $res=$con->query($qry1);
             $personDetail=$res->fetch_assoc();
             
-            if($oldPass==$personDetail['AccPassword'] && $newPass==$conPass){
-                $qry2="UPDATE account SET AccPassword='".$newPass."' WHERE AccID='".$_SESSION['AccountID']."'";
+            if(password_verify($oldPass, $personDetail['AccPassword']) && $newPass==$conPass){
+                $hashed_password = password_hash($newPass, PASSWORD_DEFAULT);
+                $qry2="UPDATE account SET AccPassword='".$hashed_password."' WHERE AccID='".$_SESSION['AccountID']."'";
 
                 if($con->query($qry2)===TRUE){
                     echo '<script>alert("Password Changed")</script>';
@@ -64,7 +65,7 @@
                     echo '<script>alert("Something went wrong!! Try Again")</script>';
                 }
             }
-            else if($oldPass==$personDetail['AccPassword']){
+            else if(password_verify($oldPass, $personDetail['AccPassword'])){
                 echo '<script>alert("Passwords didn\'t match!!")</script>';
             }
             else{

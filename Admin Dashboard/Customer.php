@@ -97,13 +97,33 @@ include('../config.php');
                                         echo "</td><td>".$collect['lastName'];
                                         echo "</td><td>".$collect['address'];
                                         echo "</td><td>".$collect['phone'];
-                                        echo '</td><td><button type="submit" name="delete" value="'.$collect['AccID'].'" id="edit-btn">Del</button></td></tr>';
+                                        echo '</td><td><button type="submit" name="delete" value="'.$collect['AccID'].'" id="edit-btn" onclick="return confirm(\'Are you sure you want to delete this customer?\');">Del</button></td></tr>';
+                                        
                                         if(isset($_GET['delete'])){
-                                            $qry2="DELETE FROM customer WHERE AccID=".$_GET['delete'];
-                                            $qry3="DELETE FROM account WHERE AccID=".$_GET['delete'];
-                                            $con->query($qry2);
-                                            $con->query($qry3);
-                                            header('Location:Customer.php');
+                                            // Start transaction for data consistency
+                                            $con->begin_transaction();
+                                            try {
+                                                $accID = $_GET['delete'];
+                                                $qry2="DELETE FROM customer WHERE AccID=".$accID;
+                                                $qry3="DELETE FROM account WHERE AccID=".$accID;
+                                                
+                                                // Execute the queries
+                                                if($con->query($qry2) && $con->query($qry3)) {
+                                                    // If both successful, commit the transaction
+                                                    $con->commit();
+                                                    echo '<script>alert("Customer deleted successfully!");</script>';
+                                                } else {
+                                                    // If any issues, rollback changes
+                                                    $con->rollback();
+                                                    echo '<script>alert("Failed to delete customer!");</script>';
+                                                }
+                                                
+                                                header('Location:Customer.php');
+                                            } catch (Exception $e) {
+                                                // On exception, rollback changes
+                                                $con->rollback();
+                                                echo '<script>alert("Error: ' . $e->getMessage() . '");</script>';
+                                            }
                                         }
                                     }
                                     mysqli_close($con);

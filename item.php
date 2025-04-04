@@ -35,9 +35,10 @@
                 <div class="buttons">
                     <button id="button" onclick="addItem()">Add</button>
                     <div id="quant">
-                        <form action="#">
-                            <input type="number" id="quantity" name="quantity" min="1" max="5">
-                            <input type="submit" id="submit1" value="ok" name="">
+                        <form action="cart.php" method="get">
+                            <input type="number" id="quantity" name="quantity" min="1" max="5" value="1">
+                            <input type="hidden" name="add_to_cart" value="<?php echo $_SESSION['productID']; ?>">
+                            <input type="submit" id="submit1" value="Add to Cart">
                         </form>
                     </div>
 
